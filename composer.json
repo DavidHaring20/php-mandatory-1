@@ -1,0 +1,13 @@
+{
+    "name": "david-haring/mandatory-1",
+    "description": "Mandatory project 1.",
+    "type": "project",
+    "license": "MIT License",
+    "authors": [
+        {
+            "name": "DavidHaring20",
+            "email": "davidharingri@gmail.com"
+        }
+    ],
+    "require": {}
+}

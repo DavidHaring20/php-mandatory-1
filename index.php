@@ -6,7 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
-<body>
-    <h1>Hello from project.</h1>
+    <?php
+        include("FakePerson.php");
+
+        $fakePerson = new FakePerson();
+        echo $fakePerson->get_fake_cpr_number();
+    ?>
 </body>
 </html>
