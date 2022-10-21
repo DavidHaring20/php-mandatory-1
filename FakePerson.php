@@ -20,27 +20,30 @@ class FakePerson {
     }
 
     public function get_fake_full_name_and_gender() {
-        // check if the file exists
         if (!file_exists('data/person-names.json')) {
             return "File person-names.json is missing. Data from this file is required to make function get_fake_full_name_and_gender() work.";
         }
-
-        // read from file 
+        
         $jsonFile = file_get_contents('data/person-names.json');
         $array = json_decode($jsonFile, true);
-        
-        // process data 
         $personsArray = array_values($array)[0];
         
-        // extract random person and random person data
         $randomPersonArray = $personsArray[rand(0, count($personsArray) - 1)];
         $fullNameAndGender = $randomPersonArray['name'] . " " . $randomPersonArray['surname'] . " - " . $randomPersonArray['gender'];
 
-        // return data
         return $fullNameAndGender;
     }
 
-    public function get_fake_full_name_gender_and_date_of_birth() {}
+    public function get_fake_full_name_gender_and_date_of_birth() {
+        $fakePerson = new FakePerson();
+        $fullNameAndGender = $fakePerson->get_fake_full_name_and_gender();
+
+        $dd = str_pad(strval(rand(1, 31)), 2, "0", STR_PAD_LEFT);
+        $mm = str_pad(strval(rand(1, 12)), 2, "0", STR_PAD_LEFT);
+        $yy = strval(rand(1900, 2022));
+
+        return $fullNameAndGender . " - " . $dd . "/" . $mm . "/" . $yy;
+    }
 
     public function get_fake_cpr_number_full_name_and_gender() {}
 
