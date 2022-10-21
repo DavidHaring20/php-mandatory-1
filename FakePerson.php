@@ -177,7 +177,21 @@ class FakePerson {
         return $streetName . " " . $streetNumber . " " . $streetNumberLetter . " " . $floor . " " . $door . " " . $town . " " . $code;
     }
 
-    public function get_fake_mobile_phone_number() {}
+    public function get_fake_mobile_phone_number() {
+        if (!file_exists('data/phone-number-digit-combinations.json')) {
+            return "File phone-number-digit-combinations.json is missing. Data from this file is required to make function get_fake_mobile_phone_number() work.";
+        }
+
+        $jsonFile = file_get_contents('data/phone-number-digit-combinations.json');
+        $mobilePhoneNumberDigitCombinationArray = json_decode($jsonFile, true);
+
+        $mobilePhoneNumber = $mobilePhoneNumberDigitCombinationArray[rand(0, count($mobilePhoneNumberDigitCombinationArray) - 1)]["combination"];
+
+        while (strlen($mobilePhoneNumber) < 8) {
+            $mobilePhoneNumber .= strval(rand(1, 9));
+        }
+        return $mobilePhoneNumber;
+    }
 
     public function get_fake_person() {}
 
