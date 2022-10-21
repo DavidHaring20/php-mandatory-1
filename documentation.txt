@@ -1,0 +1,9 @@
+get_fake_cpr_number() 
+    This method creates random CPR number by taking 4 different numbers randomly generated numbers. First is days, second is months, third is year and fourth 
+    is random sequence of numbers. They are automatically parsed to String with strval() method and if they lack some digits, padded with str_pad() method.
+
+get_fake_full_name_and_gender()
+    This method extracts the person from person-names.json file. Firstly, whole file is read into one variable. That variable is decoded using json_decode() method
+    and by providing "true" parameter, returned is associative array. Since there is array in array, we extract needed array. Next we pick random person by using rand()
+    method. As minimum parameter we give 0 as arrays in PHP start with 0 and as maximum parameter we give total size of the array but deducted by 1. We are then given the
+    associative array presenting one person. 
