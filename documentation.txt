@@ -26,3 +26,8 @@ get_fake_cpr_number_full_name_gender_and_date_of_birth()
     associative array presenting one person. We take that array to form full name and gender of a person. Next we generate day, month and year for cpr number. 
     Year is generated in yyyy format and not in yy format as before. Therefore substr() method is used to have to different formats needed. Depending on the sex of the person 
     either odd or even number is generated for the end of CPR number.
+
+get_fake_address()
+    This method returns full fake address. Street name is generated randomly from provided characters. Number is randomly generated. Floor is by default "st", bt there is added 
+    simple logic that either let's it be "st" or changes to some other floor - number between 1 and 99. Door is by default "th". By adding simple logic it can either be "tv", "mf", 
+    a number between 1 and 50 or a String consisting of lowercase letter, an optional dash and 1 to 3 digits. Postal code and town are extracted from postal-codes.json file.

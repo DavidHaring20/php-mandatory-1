@@ -112,7 +112,70 @@ class FakePerson {
         return $dd.$mm.$yy.$random . " - " . $fullNameAndGender . " - " . $dd . "/" . $mm . "/" . $year;
     }
 
-    public function get_fake_address() {}
+    public function get_fake_address() {
+        if (!file_exists('data/postal-codes.json')) {
+            return "File postal-codes.json is missing. Data from this file is required to make function get_fake_address() work.";
+        }
+        
+        // Street name
+        $characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';    
+        $streetName = '';
+        $streetNameLength = rand(8, 16);
+
+        for ($i = 0; $i < $streetNameLength; $i++) {
+            $characterSelector = rand(0, strlen($characters) - 1);
+            $streetName .= $characters[$characterSelector];
+        }
+
+        // Number
+        $streetNumber = rand(1, 999);
+        $streetNumberLetter = "";
+        $floor = 'st';
+        $door = 'th';
+        $option1 = rand(1, 999);
+        $option2 = rand(0, 1);
+        $option3 = rand(0, 4);
+
+        // Street Number Letter
+        if ($option1 % 2 === 0) {
+            $streetNumberLetter = $characters[rand(0, (strlen($characters) / 2 - 1))]; 
+        } 
+
+        // Floor 
+        if ($option2 === 1) {
+            $floor = strval(rand(1, 99)) . ". sal";
+        }
+
+        // Door
+        if ($option3 === 1) {
+            $door = 'mf';
+        } elseif ($option3 === 2) {
+            $door = 'tv';
+        } elseif ($option3 === 3) {
+            $door = strval(rand(1, 50));
+        } elseif ($option3 === 4) {
+            $option31 = rand(1, 3);
+            $door = $characters[rand(strlen($characters) / 2, strlen($characters) - 1)]; 
+
+            if ($option31 % 2 === 0) {
+                $door .= '-';
+            } 
+
+            for ($i = 0; $i < $option31 % 4; $i++) {
+                $door .= strval(rand(1, 9));
+            }
+        }
+
+        // Town and postal code
+        $jsonFile = file_get_contents('data/postal-codes.json');
+        $postalCodes = json_decode($jsonFile, true);
+
+        $randomPostalCodeArray = $postalCodes[rand(0, count($postalCodes) - 1)];
+        $code = $randomPostalCodeArray["postal_code"];
+        $town = $randomPostalCodeArray["town_name"];
+
+        return $streetName . " " . $streetNumber . " " . $streetNumberLetter . " " . $floor . " " . $door . " " . $town . " " . $code;
+    }
 
     public function get_fake_mobile_phone_number() {}
 
