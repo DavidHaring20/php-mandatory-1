@@ -78,7 +78,39 @@ class FakePerson {
         return $dd.$mm.$yy.$random . " - " . $fullNameAndGender;
     }
 
-    public function get_fake_cpr_number_full_name_gender_and_date_of_birth() {}
+    public function get_fake_cpr_number_full_name_gender_and_date_of_birth() {
+        if (!file_exists('data/person-names.json')) {
+            return "File person-names.json is missing. Data from this file is required to make function get_fake_full_name_and_gender() work.";
+        }
+
+        $jsonFile = file_get_contents('data/person-names.json');
+        $array = json_decode($jsonFile, true);
+        $personsArray = array_values($array)[0];
+        
+        $randomPersonArray = $personsArray[rand(0, count($personsArray) - 1)];
+        $fullNameAndGender = $randomPersonArray['name'] . " " . $randomPersonArray['surname'] . " - " . $randomPersonArray['gender'];
+
+        $dd = str_pad(strval(rand(1, 31)), 2, "0", STR_PAD_LEFT);
+        $mm = str_pad(strval(rand(1, 12)), 2, "0", STR_PAD_LEFT);
+        $year = strval(rand(1900, 2022));   
+        $yy = substr($year, 2, 2);
+        $random = 0;
+
+        if ($randomPersonArray["gender"] === "male") {
+            // create odd number
+            $random = floor(rand(4, 20000) / 2);
+            if ($random % 2 === 0) {
+                $random -= 1;
+            }
+        } else {
+            // create even number
+            $random = rand(1, 4999) * 2;
+        }
+
+        $random = str_pad(strval($random), 4, "0", STR_PAD_LEFT);
+
+        return $dd.$mm.$yy.$random . " - " . $fullNameAndGender . " - " . $dd . "/" . $mm . "/" . $year;
+    }
 
     public function get_fake_address() {}
 

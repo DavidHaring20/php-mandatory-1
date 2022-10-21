@@ -18,3 +18,11 @@ get_fake_cpr_number_full_name_and_gender()
     method. As minimum parameter we give 0 as arrays in PHP start with 0 and as maximum parameter we give total size of the array but deducted by 1. We are then given the
     associative array presenting one person. We take that array to form full name and gender of a person. Next we generate day, month and year for cpr number. Depending on 
     the sex of the person either odd or even number is generated.
+
+get_fake_cpr_number_full_name_gender_and_date_of_birth()
+    This method extracts the person from person-names.json file. Firstly, whole file is read into one variable. That variable is decoded using json_decode() method
+    and by providing "true" parameter, returned is associative array. Since there is array in array, we extract needed array. Next we pick random person by using rand()
+    method. As minimum parameter we give 0 as arrays in PHP start with 0 and as maximum parameter we give total size of the array but deducted by 1. We are then given the
+    associative array presenting one person. We take that array to form full name and gender of a person. Next we generate day, month and year for cpr number. 
+    Year is generated in yyyy format and not in yy format as before. Therefore substr() method is used to have to different formats needed. Depending on the sex of the person 
+    either odd or even number is generated for the end of CPR number.
