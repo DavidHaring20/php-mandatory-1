@@ -193,9 +193,26 @@ class FakePerson {
         return $mobilePhoneNumber;
     }
 
-    public function get_fake_person() {}
+    public function get_fake_person() {
+        $fakePerson = new FakePerson();
+        $cprNumberFullnameGenderAndDateOfBirth = $fakePerson->get_fake_cpr_number_full_name_gender_and_date_of_birth();
+        $address = $fakePerson->get_fake_address();
+        $mobilePhoneNumber = $fakePerson->get_fake_mobile_phone_number();
+        return "PERSONAL INFORMATION: " . $cprNumberFullnameGenderAndDateOfBirth . "<br> ADDRESS: " . $address . "<br> PHONE NUMBER: " . $mobilePhoneNumber . "<hr>";
+    }
 
-    public function get_fake_persons() {}
+    public function get_fake_persons($numberOfFakePersons) {
+        if ($numberOfFakePersons < 2 || $numberOfFakePersons > 100) {
+            return "Number of required persons should be between 2 and 100. If you want to get one person, use get_fake_person() method.";
+        }
+
+        $fakePerson = new FakePerson();
+
+        for ($i = 0; $i < $numberOfFakePersons; $i++) {
+            echo "<h2>" . $i + 1 . "</h2>";
+            print_r($fakePerson->get_fake_person());
+        }
+    }
 }
 
 ?> 
