@@ -14,7 +14,7 @@ class FakePersonTest extends TestCase {
         $data = $fakePerson->getFakeCprNumber();
 
         // then asserted cprNumber should not be null
-        $this->assertNotNull($data);
+        $this->assertNotNull($data['cprNumber']);
     }
 
     /** @test */
@@ -24,10 +24,9 @@ class FakePersonTest extends TestCase {
 
         // when getFakeCprNumber method is called
         $data = $fakePerson->getFakeCprNumber();
-        $cprNumber = $data['cprNumber'];
 
         // then asserted cprNumber must be of correct length
-        $this->assertSame(10, strlen($cprNumber));
+        $this->assertSame(10, strlen($data['cprNumber']));
     }
 
     /** @test */
@@ -37,8 +36,7 @@ class FakePersonTest extends TestCase {
 
         // when getFakeCprNumber method is called
         $data = $fakePerson->getFakeCprNumber();
-        $cprNumber = $data['cprNumber']; 
-        $days = intval(substr($cprNumber, 0, 2));
+        $days = intval(substr($data['cprNumber'], 0, 2));
 
         // then asserted days must be less than or equal to 30
         $this->assertLessThanOrEqual(30, $days);
@@ -51,11 +49,24 @@ class FakePersonTest extends TestCase {
 
         // when getFakeCprNumber method is called
         $data = $fakePerson->getFakeCprNumber();
-        $cprNumber = $data['cprNumber']; 
-        $months = intval(substr($cprNumber, 2, 2));
+        $months = intval(substr($data['cprNumber'], 2, 2));
 
         // then asserted months must be less than or equal to 12
         $this->assertLessThanOrEqual(12, $months);
+    }
+
+    /** @test */
+    public function getFakeFullNameAndGenderNotNull(): void {
+        // given that there is FakePerson object
+        $fakePerson = new FakePerson();
+
+        // when getFakeFullNameAndGender method is called 
+        $data = $fakePerson->getFakeFullNameAndGender();
+
+        // then asserted firstName, lastName and gender must not be null
+        $this->assertNotNull($data['firstName']);
+        $this->assertNotNull($data['lastName']);
+        $this->assertNotNull($data['gender']);
     }
 }
 ?>

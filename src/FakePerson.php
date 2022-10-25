@@ -22,12 +22,17 @@ class FakePerson {
         return $data;
     }
 
-    public function get_fake_full_name_and_gender() {
-        if (!file_exists('data/person-names.json')) {
-            return "File person-names.json is missing. Data from this file is required to make function get_fake_full_name_and_gender() work.";
+    public function getFakeFullNameAndGender() {
+        $pathToFile = 'data/person-names.json';
+
+        // Code inside the first if-statement is executed during PHPUnit testing 
+        if (file_exists('src/data/person-names.json')) {
+            $pathToFile = 'src/data/person-names.json';
+        } elseif (!file_exists('data/person-names.json')) {
+            return "File person-names.json is missing. Data from this file is required to make function getFakeFullNameAndGender() work.";
         }
 
-        $jsonFile = file_get_contents('data/person-names.json');
+        $jsonFile = file_get_contents($pathToFile);
         $array = json_decode($jsonFile, true);
         $personsArray = array_values($array)[0];
         
@@ -43,7 +48,7 @@ class FakePerson {
 
     public function get_fake_full_name_gender_and_date_of_birth() {
         $fakePerson = new FakePerson();
-        $data = $fakePerson->get_fake_full_name_and_gender();
+        $data = $fakePerson->getFakeFullNameAndGender();
 
         $dd = str_pad(strval(rand(1, 31)), 2, "0", STR_PAD_LEFT);
         $mm = str_pad(strval(rand(1, 12)), 2, "0", STR_PAD_LEFT);
