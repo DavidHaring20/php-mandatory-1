@@ -16,7 +16,10 @@ class FakePerson {
         $yy = str_pad(strval(rand(0, 99)), 2, "0", STR_PAD_LEFT);
         $random = str_pad(strval(rand(1, 9999)), 4, "0", STR_PAD_LEFT);
 
-        return $dd.$mm.$yy.$random;
+        $data = array();
+        $data['cprNumber'] = $dd.$mm.$yy.$random;
+
+        return $data;
     }
 
     public function get_fake_full_name_and_gender() {
@@ -29,20 +32,26 @@ class FakePerson {
         $personsArray = array_values($array)[0];
         
         $randomPersonArray = $personsArray[rand(0, count($personsArray) - 1)];
-        $fullNameAndGender = $randomPersonArray['name'] . " " . $randomPersonArray['surname'] . " - " . $randomPersonArray['gender'];
 
-        return $fullNameAndGender;
+        $data = array();
+        $data['firstName'] = $randomPersonArray['name'];
+        $data['lastName'] = $randomPersonArray['surname'];
+        $data['gender'] = $randomPersonArray['gender'];
+
+        return $data;
     }
 
     public function get_fake_full_name_gender_and_date_of_birth() {
         $fakePerson = new FakePerson();
-        $fullNameAndGender = $fakePerson->get_fake_full_name_and_gender();
+        $data = $fakePerson->get_fake_full_name_and_gender();
 
         $dd = str_pad(strval(rand(1, 31)), 2, "0", STR_PAD_LEFT);
         $mm = str_pad(strval(rand(1, 12)), 2, "0", STR_PAD_LEFT);
         $yy = strval(rand(1900, 2022));
 
-        return $fullNameAndGender . " - " . $dd . "/" . $mm . "/" . $yy;
+        $data['dateOfBirth'] =  $dd . "/" . $mm . "/" . $yy;
+
+        return $data;
     }
 
     public function get_fake_cpr_number_full_name_and_gender() {
@@ -55,7 +64,11 @@ class FakePerson {
         $personsArray = array_values($array)[0];
         
         $randomPersonArray = $personsArray[rand(0, count($personsArray) - 1)];
-        $fullNameAndGender = $randomPersonArray['name'] . " " . $randomPersonArray['surname'] . " - " . $randomPersonArray['gender'];
+
+        $data = array();
+        $data['firstName'] = $randomPersonArray['name'];
+        $data['lastName'] = $randomPersonArray['surname'];
+        $data['gender'] = $randomPersonArray['gender'];
 
         $dd = str_pad(strval(rand(1, 31)), 2, "0", STR_PAD_LEFT);
         $mm = str_pad(strval(rand(1, 12)), 2, "0", STR_PAD_LEFT);
@@ -74,8 +87,9 @@ class FakePerson {
         }
 
         $random = str_pad(strval($random), 4, "0", STR_PAD_LEFT);
-
-        return $dd.$mm.$yy.$random . " - " . $fullNameAndGender;
+        $data['cprNumber'] = $dd.$mm.$yy.$random;
+        
+        return $data;
     }
 
     public function get_fake_cpr_number_full_name_gender_and_date_of_birth() {
@@ -88,13 +102,19 @@ class FakePerson {
         $personsArray = array_values($array)[0];
         
         $randomPersonArray = $personsArray[rand(0, count($personsArray) - 1)];
-        $fullNameAndGender = $randomPersonArray['name'] . " " . $randomPersonArray['surname'] . " - " . $randomPersonArray['gender'];
+
+        $data = array();
+        $data['firstName'] = $randomPersonArray['name'];
+        $data['lastName'] = $randomPersonArray['surname'];
+        $data['gender'] = $randomPersonArray['gender'];
 
         $dd = str_pad(strval(rand(1, 31)), 2, "0", STR_PAD_LEFT);
         $mm = str_pad(strval(rand(1, 12)), 2, "0", STR_PAD_LEFT);
         $year = strval(rand(1900, 2022));   
         $yy = substr($year, 2, 2);
         $random = 0;
+
+        $data['dateOfBirth'] = $dd . "/" . $mm . "/" . $year;
 
         if ($randomPersonArray["gender"] === "male") {
             // create odd number
@@ -108,8 +128,9 @@ class FakePerson {
         }
 
         $random = str_pad(strval($random), 4, "0", STR_PAD_LEFT);
+        $data['cprNumber'] = $dd.$mm.$yy.$random;
 
-        return $dd.$mm.$yy.$random . " - " . $fullNameAndGender . " - " . $dd . "/" . $mm . "/" . $year;
+        return $data;
     }
 
     public function get_fake_address() {
@@ -174,7 +195,16 @@ class FakePerson {
         $code = $randomPostalCodeArray["postal_code"];
         $town = $randomPostalCodeArray["town_name"];
 
-        return $streetName . " " . $streetNumber . " " . $streetNumberLetter . " " . $floor . " " . $door . " " . $town . " " . $code;
+        $data = array();
+        $data['streetName'] = $streetName;
+        $data['streetNumber'] = $streetNumber;
+        $data['streetNumberLetter'] = $streetNumberLetter;
+        $data['floor'] = $floor;
+        $data['door'] = $door;
+        $data['town'] = $town;
+        $data['code'] = $code;
+
+        return $data;
     }
 
     public function get_fake_mobile_phone_number() {
@@ -190,7 +220,11 @@ class FakePerson {
         while (strlen($mobilePhoneNumber) < 8) {
             $mobilePhoneNumber .= strval(rand(1, 9));
         }
-        return $mobilePhoneNumber;
+
+        $data = array();
+        $data['mobilePhoneNumber'] = $mobilePhoneNumber;
+
+        return $data;
     }
 
     public function get_fake_person() {
@@ -198,7 +232,8 @@ class FakePerson {
         $cprNumberFullnameGenderAndDateOfBirth = $fakePerson->get_fake_cpr_number_full_name_gender_and_date_of_birth();
         $address = $fakePerson->get_fake_address();
         $mobilePhoneNumber = $fakePerson->get_fake_mobile_phone_number();
-        return "PERSONAL INFORMATION: " . $cprNumberFullnameGenderAndDateOfBirth . "<br> ADDRESS: " . $address . "<br> PHONE NUMBER: " . $mobilePhoneNumber . "<hr>";
+        $data = array_merge($cprNumberFullnameGenderAndDateOfBirth, $address, $mobilePhoneNumber);
+        return $data;
     }
 
     public function get_fake_persons($numberOfFakePersons) {
@@ -207,11 +242,13 @@ class FakePerson {
         }
 
         $fakePerson = new FakePerson();
+        $data = array();
 
         for ($i = 0; $i < $numberOfFakePersons; $i++) {
-            echo "<h2>" . $i + 1 . "</h2>";
-            print_r($fakePerson->get_fake_person());
+            array_push($data, $fakePerson->get_fake_person());
         }
+
+        return $data;
     }
 }
 

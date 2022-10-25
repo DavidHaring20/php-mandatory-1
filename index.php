@@ -18,7 +18,7 @@
         // print_r($fakePerson->get_fake_address());
         // print_r($fakePerson->get_fake_mobile_phone_number());
         // print_r($fakePerson->get_fake_person());
-        print_r($fakePerson->get_fake_persons(101));
+        print_r($fakePerson->get_fake_persons(100));
 ?>
 </body>
 </html>
