@@ -251,5 +251,3 @@ class FakePerson {
         return $data;
     }
 }
-
-?> 
