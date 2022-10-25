@@ -10,7 +10,7 @@ class FakePerson {
     public string $address;
     public string $mobilePhoneNumber;
 
-    public function get_fake_cpr_number() {
+    public function getFakeCprNumber() {
         $dd = str_pad(strval(rand(1, 31)), 2, "0", STR_PAD_LEFT);
         $mm = str_pad(strval(rand(1, 12)), 2, "0", STR_PAD_LEFT);
         $yy = str_pad(strval(rand(0, 99)), 2, "0", STR_PAD_LEFT);

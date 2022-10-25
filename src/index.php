@@ -10,7 +10,7 @@
         include("FakePerson.php");
 
         $fakePerson = new FakePerson();
-        // print_r($fakePerson->get_fake_cpr_number()); 
+        // print_r($fakePerson->getFakeCprNumber()); 
         // print_r($fakePerson->get_fake_full_name_and_gender());
         // print_r($fakePerson->get_fake_full_name_gender_and_date_of_birth());
         // print_r($fakePerson->get_fake_cpr_number_full_name_and_gender());
