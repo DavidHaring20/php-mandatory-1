@@ -228,12 +228,17 @@ class FakePerson {
         return $data;
     }
 
-    public function get_fake_mobile_phone_number() {
-        if (!file_exists('data/phone-number-digit-combinations.json')) {
-            return "File phone-number-digit-combinations.json is missing. Data from this file is required to make function get_fake_mobile_phone_number() work.";
+    public function getFakeMobilePhoneNumber() {
+        $pathToFile = 'data/phone-number-digit-combinations.json';
+        
+        // Code inside the first if-statement is executed during PHPUnit testing 
+        if (file_exists('src/data/phone-number-digit-combinations.json')) {
+            $pathToFile = 'src/data/phone-number-digit-combinations.json';
+        } elseif (!file_exists('data/phone-number-digit-combinations.json')) {
+            return "File phone-number-digit-combinations.json is missing. Data from this file is required to make function getFakeMobilePhoneNumber() work.";
         }
 
-        $jsonFile = file_get_contents('data/phone-number-digit-combinations.json');
+        $jsonFile = file_get_contents($pathToFile);
         $mobilePhoneNumberDigitCombinationArray = json_decode($jsonFile, true);
 
         $mobilePhoneNumber = $mobilePhoneNumberDigitCombinationArray[rand(0, count($mobilePhoneNumberDigitCombinationArray) - 1)]["combination"];
@@ -252,7 +257,7 @@ class FakePerson {
         $fakePerson = new FakePerson();
         $cprNumberFullnameGenderAndDateOfBirth = $fakePerson->getFakeCprNumberFullNameGenderAndDateOfBirth();
         $address = $fakePerson->getFakeAddress();
-        $mobilePhoneNumber = $fakePerson->get_fake_mobile_phone_number();
+        $mobilePhoneNumber = $fakePerson->getFakeMobilePhoneNumber();
         $data = array_merge($cprNumberFullnameGenderAndDateOfBirth, $address, $mobilePhoneNumber);
         return $data;
     }

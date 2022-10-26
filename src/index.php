@@ -15,8 +15,8 @@
         // print_r($fakePerson->getFakeFullNameGenderAndDateOfBirth());
         // print_r($fakePerson->getFakeCprNumberFullNameAndGender());
         // print_r($fakePerson->getFakeCprNumberFullNameGenderAndDateOfBirth());
-        print_r($fakePerson->getFakeAddress());
-        // print_r($fakePerson->get_fake_mobile_phone_number());
+        // print_r($fakePerson->getFakeAddress());
+        // print_r($fakePerson->getFakeMobilePhoneNumber());
         // print_r($fakePerson->get_fake_person());
         // print_r($fakePerson->get_fake_persons(100));
 ?>

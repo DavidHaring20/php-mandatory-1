@@ -428,5 +428,68 @@ class FakePersonTest extends TestCase {
         $this->assertContains($data['town'], $mergedArray);
     }
 
+    /** @test */
+    public function getFakeMobilePhoneNumberDataFileExists(): void {
+        // given that there is a FakePerson object
+
+        // when getFakeMobilePhoneNumber method is called 
+
+        // then phone-number-digit-combinations.json file must exist
+        $this->assertFileExists('src/data/phone-number-digit-combinations.json');
+    }
+
+    /** @test */
+    public function getFakeMobilePhoneNumberNotNull(): void {
+        // given that there is a FakePerson object
+        $fakePerson = new FakePerson();
+
+        // when getFakeMobilePhoneNumber method is called 
+        $data = $fakePerson->getFakeMobilePhoneNumber();
+
+        // then mobilePhoneNumber must not be null 
+        $this->assertNotNull($data['mobilePhoneNumber']);
+    }
+
+    /** @test */
+    public function getFakeMobilePhoneNumberOriginatesFromFile(): void {
+        // given that there is a FakePerson object
+        $fakePerson = new FakePerson();
+
+        // when getFakeMobilePhoneNumber method is called 
+        $data = $fakePerson->getFakeMobilePhoneNumber();
+        $jsonFile = file_get_contents('src/data/phone-number-digit-combinations.json');
+        $array = json_decode($jsonFile, true);
+        $combinationsArray = array_values($array);
+        $mergedArray = array();
+
+        for ($i = 0; $i < count($combinationsArray); $i++) {
+            array_push($mergedArray, $combinationsArray[$i]['combination']);
+        }
+
+        $oneDigit = substr($data['mobilePhoneNumber'], 0, 1);
+        $twoDigits = substr($data['mobilePhoneNumber'], 0, 2);
+        $threeDigits = substr($data['mobilePhoneNumber'], 0, 3);
+
+        // then either first oneDigit, first twoDigits or firstThree digits should originate from phone-number-digit-combinations.json file
+        if (in_array($oneDigit, $mergedArray)) {
+            $this->assertTrue(in_array($oneDigit, $mergedArray));
+        } elseif (in_array($twoDigits, $mergedArray)) {
+            $this->assertTrue(in_array($twoDigits, $mergedArray));
+        } else {
+            $this->assertTrue(in_array($threeDigits, $mergedArray));
+        }
+    }
+
+    /** @test */
+    public function getFakeMobilePhoneNumberCorrectLength(): void {
+        // given that there is a FakePerson object
+        $fakePerson = new FakePerson();
+
+        // when getFakeMobilePhoneNumber method is called 
+        $data = $fakePerson->getFakeMobilePhoneNumber();
+
+        // then mobilePhoneNumber must be of correct length
+        $this->assertEquals(8, strlen($data['mobilePhoneNumber']));
+    }
 }
 ?>
