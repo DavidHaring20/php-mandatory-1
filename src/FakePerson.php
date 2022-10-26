@@ -102,12 +102,17 @@ class FakePerson {
         return $data;
     }
 
-    public function get_fake_cpr_number_full_name_gender_and_date_of_birth() {
-        if (!file_exists('data/person-names.json')) {
-            return "File person-names.json is missing. Data from this file is required to make function get_fake_full_name_and_gender() work.";
+    public function getFakeCprNumberFullNameGenderAndDateOfBirth() {
+        $pathToFile = 'data/person-names.json';
+
+        // Code inside the first if-statement is executed during PHPUnit testing 
+        if (file_exists('src/data/person-names.json')) {
+            $pathToFile = 'src/data/person-names.json';
+        } elseif (!file_exists('data/person-names.json')) {
+            return "File person-names.json is missing. Data from this file is required to make function getFakeCprNumberFullNameGenderAndDateOfBirth() work.";
         }
 
-        $jsonFile = file_get_contents('data/person-names.json');
+        $jsonFile = file_get_contents($pathToFile);
         $array = json_decode($jsonFile, true);
         $personsArray = array_values($array)[0];
         
@@ -239,7 +244,7 @@ class FakePerson {
 
     public function get_fake_person() {
         $fakePerson = new FakePerson();
-        $cprNumberFullnameGenderAndDateOfBirth = $fakePerson->get_fake_cpr_number_full_name_gender_and_date_of_birth();
+        $cprNumberFullnameGenderAndDateOfBirth = $fakePerson->getFakeCprNumberFullNameGenderAndDateOfBirth();
         $address = $fakePerson->get_fake_address();
         $mobilePhoneNumber = $fakePerson->get_fake_mobile_phone_number();
         $data = array_merge($cprNumberFullnameGenderAndDateOfBirth, $address, $mobilePhoneNumber);

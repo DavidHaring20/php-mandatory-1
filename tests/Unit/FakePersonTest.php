@@ -38,8 +38,8 @@ class FakePersonTest extends TestCase {
         $data = $fakePerson->getFakeCprNumber();
         $days = intval(substr($data['cprNumber'], 0, 2));
 
-        // then asserted days must be less than or equal to 30
-        $this->assertLessThanOrEqual(30, $days);
+        // then asserted days must be less than or equal to 31
+        $this->assertLessThanOrEqual(31, $days);
     }
 
     /** @test */
@@ -177,7 +177,7 @@ class FakePersonTest extends TestCase {
        $months = intval(substr($data['dateOfBirth'], 3, 2));
        $years = intval(substr($data['dateOfBirth'], 6, 4));
 
-       $this->assertLessThanOrEqual(30, $days);
+       $this->assertLessThanOrEqual(31, $days);
        $this->assertGreaterThanOrEqual(1, $days);
        $this->assertLessThanOrEqual(12, $months);
        $this->assertGreaterThanOrEqual(1, $months);
@@ -260,12 +260,123 @@ class FakePersonTest extends TestCase {
         $months = intval(substr($data['cprNumber'], 2, 2));
         $years = intval(substr($data['cprNumber'], 4, 2));
         
-        $this->assertLessThanOrEqual(30, $days);
+        $this->assertLessThanOrEqual(31, $days);
         $this->assertGreaterThanOrEqual(1, $days);
         $this->assertLessThanOrEqual(12, $months);
         $this->assertGreaterThanOrEqual(1, $months);
         $this->assertLessThanOrEqual(99, $years);
         $this->assertGreaterThanOrEqual(1 ,$years);
+    }
+
+    /** @test */
+    public function getFakeCprNumberFullNameGenderAndDateOfBirthDataFileExits(): void {
+        // given that there is FakePerson object
+
+        // when getFakeCprNumberFullNameGenderAndDateOfBirth method is called
+
+        // then person-names.json file must exist
+        $this->assertFileExists('src/data/person-names.json'); 
+    }
+
+    /** @test */
+    public function getFakeCprNumberFullNameGenderAndDateOfBirthNotNull(): void {
+        // given that there is FakePerson object
+        $fakePerson = new FakePerson();
+
+        // when getFakeCprNumberFullNameGenderAndDateOfBirth method is called
+        $data = $fakePerson->getFakeCprNumberFullNameGenderAndDateOfBirth();
+
+        // then asserted firstName, lastName, gender and cprNumber must not be null
+        $this->assertNotNull($data['firstName']);
+        $this->assertNotNull($data['lastName']);
+        $this->assertNotNull($data['gender']);
+        $this->assertNotNull($data['cprNumber']);
+        $this->assertNotNull($data['dateOfBirth']);
+    }
+
+    /** @test */
+    public function getFakeCprNumberFullNameGenderAndDateOfBirthOriginateFromFile(): void {
+        // given that there is FakePerson object and file with data 
+        $fakePerson = new FakePerson();
+        $jsonFile = file_get_contents('src/data/person-names.json');
+        $array = json_decode($jsonFile, true);
+        $personsArray = array_values($array)[0];
+        $mergedArray = array();
+
+        for ($i = 0; $i < count($personsArray); $i++) {
+            array_push($mergedArray, $personsArray[$i]['name']);
+            array_push($mergedArray, $personsArray[$i]['surname']);
+        }
+        array_push($mergedArray, 'male');
+        array_push($mergedArray, 'female');
+
+        // when getFakeCprNumberFullNameGenderAndDateOfBirth method is called
+        $data = $fakePerson->getFakeCprNumberFullNameGenderAndDateOfBirth();
+
+        // then asserted firstName, lastName and gender must originate from file
+        $this->assertContains($data['firstName'], $mergedArray);
+        $this->assertContains($data['lastName'], $mergedArray);
+        $this->assertContains($data['gender'], $mergedArray);
+    }
+
+    /** @test */
+    public function getFakeCprNumberFullNameGenderAndDateOfBirthCprNumberCorrectLength(): void {
+        // given that there is FakePerson object
+        $fakePerson = new FakePerson();
+
+        // when getFakeCprNumberFullNameGenderAndDateOfBirth method is called
+        $data = $fakePerson->getFakeCprNumberFullNameGenderAndDateOfBirth();
+
+        // then asserted cprNumber must be of correct length
+        $this->assertEquals(10, strlen($data['cprNumber']));
+    }
+
+    /** @test */
+    public function getFakeCprNumberFullNameGenderAndDateOfBirthCprNumberAndDateOfBirthCorrectFormat(): void {
+        // given that there is FakePerson object
+        $fakePerson = new FakePerson();
+
+        // when getFakeCprNumberFullNameGenderAndDateOfBirth method is called
+        $data = $fakePerson->getFakeCprNumberFullNameGenderAndDateOfBirth();
+
+        // then asserted cprNumber and dateOfBirth must be of correct format
+        $daysFromCprNumber = intval(substr($data['cprNumber'], 0, 2));
+        $monthsFromCprNumber = intval(substr($data['cprNumber'], 2, 2));
+        $yearsFromCprNumber = intval(substr($data['cprNumber'], 4, 2));
+        $daysFromDateOfBirth = intval(substr($data['dateOfBirth'], 0, 2));
+        $monthsFromDateOfBirth = intval(substr($data['dateOfBirth'], 3, 2));
+        $yearsFromDateOfBirth = intval(substr($data['dateOfBirth'], 8, 2));
+        
+        $this->assertLessThanOrEqual(31, $daysFromCprNumber);
+        $this->assertGreaterThanOrEqual(1, $daysFromCprNumber);
+        $this->assertLessThanOrEqual(12, $monthsFromCprNumber);
+        $this->assertGreaterThanOrEqual(1, $monthsFromCprNumber);
+        $this->assertLessThanOrEqual(99, $yearsFromCprNumber);
+        $this->assertGreaterThanOrEqual(1 ,$yearsFromCprNumber);
+        
+        $this->assertLessThanOrEqual(31, $daysFromDateOfBirth);
+        $this->assertGreaterThanOrEqual(1, $daysFromDateOfBirth);
+        $this->assertLessThanOrEqual(12, $monthsFromDateOfBirth);
+        $this->assertGreaterThanOrEqual(1, $monthsFromDateOfBirth);
+        $this->assertLessThanOrEqual(99, $yearsFromDateOfBirth);
+        $this->assertGreaterThanOrEqual(1 ,$yearsFromDateOfBirth);
+    }
+
+    /** @test */
+    public function getFakeCprNumberFullNameGenderAndDateOfBirthCprNumberEqualsDateOfBirth(): void {
+        // given that there is FakePerson object
+        $fakePerson = new FakePerson();
+
+        // when getFakeCprNumberFullNameGenderAndDateOfBirth method is called
+        $data = $fakePerson->getFakeCprNumberFullNameGenderAndDateOfBirth();
+
+        // then cprNumber and dateOfBirth must be equal
+        $daysFromDateOfBirth = substr($data['dateOfBirth'], 0, 2);
+        $monthsFromDateOfBirth = substr($data['dateOfBirth'], 3, 2);
+        $yearsFromDateOfBirth = substr($data['dateOfBirth'], 8, 2);
+        $cprPart = substr($data['cprNumber'], 0, 6);
+
+        $this->assertEquals($cprPart, $daysFromDateOfBirth.$monthsFromDateOfBirth.$yearsFromDateOfBirth);
     }
 }
 ?>
