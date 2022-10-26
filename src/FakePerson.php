@@ -148,10 +148,16 @@ class FakePerson {
         return $data;
     }
 
-    public function get_fake_address() {
-        if (!file_exists('data/postal-codes.json')) {
-            return "File postal-codes.json is missing. Data from this file is required to make function get_fake_address() work.";
+    public function getFakeAddress() {
+        $pathToFile = 'data/postal-codes.json';
+
+        // Code inside the first if-statement is executed during PHPUnit testing 
+        if (file_exists('src/data/postal-codes.json')) {
+            $pathToFile = 'src/data/postal-codes.json';
+        } elseif (!file_exists('data/postal-codes.json')) {
+            return "File postal-codes.json is missing. Data from this file is required to make function getFakeAddress() work.";
         }
+
         
         // Street name
         $characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';    
@@ -203,7 +209,7 @@ class FakePerson {
         }
 
         // Town and postal code
-        $jsonFile = file_get_contents('data/postal-codes.json');
+        $jsonFile = file_get_contents($pathToFile);
         $postalCodes = json_decode($jsonFile, true);
 
         $randomPostalCodeArray = $postalCodes[rand(0, count($postalCodes) - 1)];
@@ -245,7 +251,7 @@ class FakePerson {
     public function get_fake_person() {
         $fakePerson = new FakePerson();
         $cprNumberFullnameGenderAndDateOfBirth = $fakePerson->getFakeCprNumberFullNameGenderAndDateOfBirth();
-        $address = $fakePerson->get_fake_address();
+        $address = $fakePerson->getFakeAddress();
         $mobilePhoneNumber = $fakePerson->get_fake_mobile_phone_number();
         $data = array_merge($cprNumberFullnameGenderAndDateOfBirth, $address, $mobilePhoneNumber);
         return $data;

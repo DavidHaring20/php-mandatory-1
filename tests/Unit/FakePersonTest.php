@@ -378,5 +378,55 @@ class FakePersonTest extends TestCase {
 
         $this->assertEquals($cprPart, $daysFromDateOfBirth.$monthsFromDateOfBirth.$yearsFromDateOfBirth);
     }
+
+    /** @test */
+    public function getFakeAddressDataFileExists(): void {
+        // given that there is FakePerson object
+
+        // when getFakeAddress method is called
+
+        // then postal-codes.json file must exist
+        $this->assertFileExists('src/data/postal-codes.json');
+    }
+    
+    /** @test */
+    public function getFakeAddressNotNull(): void {
+        // given that there is FakePerson object
+        $fakePerson = new FakePerson();
+
+        // when getFakeAddress method is called
+        $data = $fakePerson->getFakeAddress();
+
+        // then streetName, streetNumber, floor, door, town and postal code must not be null
+        $this->assertNotNull($data['streetName']);
+        $this->assertNotNull($data['streetNumber']);
+        $this->assertNotNull($data['floor']);
+        $this->assertNotNull($data['door']);
+        $this->assertNotNull($data['town']);
+        $this->assertNotNull($data['code']);
+    }
+    
+    /** @test */
+    public function getFakeAddressOriginateFromFile(): void {
+        // given that there is FakePerson object and file with data 
+        $fakePerson = new FakePerson();
+        $jsonFile = file_get_contents('src/data/postal-codes.json');
+        $array = json_decode($jsonFile, true);
+        $personsArray = array_values($array);
+        $mergedArray = array();
+
+        for ($i = 0; $i < count($personsArray); $i++) {
+            array_push($mergedArray, $personsArray[$i]['postal_code']);
+            array_push($mergedArray, $personsArray[$i]['town_name']);
+        }
+
+        // when getFakeAddress method is called
+        $data = $fakePerson->getFakeAddress();
+
+        // then asserted code and town must originate from file
+        $this->assertContains($data['code'], $mergedArray);
+        $this->assertContains($data['town'], $mergedArray);
+    }
+
 }
 ?>
