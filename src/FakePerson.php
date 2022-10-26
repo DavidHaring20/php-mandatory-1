@@ -46,7 +46,7 @@ class FakePerson {
         return $data;
     }
 
-    public function get_fake_full_name_gender_and_date_of_birth() {
+    public function getFakeFullNameGenderAndDateOfBirth() {
         $fakePerson = new FakePerson();
         $data = $fakePerson->getFakeFullNameAndGender();
 

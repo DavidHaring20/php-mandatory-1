@@ -11,8 +11,8 @@
 
         $fakePerson = new FakePerson();
         // print_r($fakePerson->getFakeCprNumber()); 
-        print_r($fakePerson->getFakeFullNameAndGender());
-        // print_r($fakePerson->get_fake_full_name_gender_and_date_of_birth());
+        // print_r($fakePerson->getFakeFullNameAndGender());
+        // print_r($fakePerson->getFakeFullNameGenderAndDateOfBirth());
         // print_r($fakePerson->get_fake_cpr_number_full_name_and_gender());
         // print_r($fakePerson->get_fake_cpr_number_full_name_gender_and_date_of_birth());
         // print_r($fakePerson->get_fake_address());
