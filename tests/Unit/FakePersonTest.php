@@ -177,8 +177,6 @@ class FakePersonTest extends TestCase {
        $months = intval(substr($data['dateOfBirth'], 3, 2));
        $years = intval(substr($data['dateOfBirth'], 6, 4));
 
-       echo $days . $months . $years;
-
        $this->assertLessThanOrEqual(30, $days);
        $this->assertGreaterThanOrEqual(1, $days);
        $this->assertLessThanOrEqual(12, $months);
@@ -187,5 +185,87 @@ class FakePersonTest extends TestCase {
        $this->assertGreaterThanOrEqual(1900 ,$years);
     }
 
+    /** @test */
+    public function getFakeCprNumberFullNameAndGenderDataFileExists():void {
+        // given that there is FakePerson object
+
+        // when getFakeCprNumberFullNameAndGender method is called
+
+        // then person-names.json file must exist
+        $this->assertFileExists('src/data/person-names.json'); 
+    }
+
+    /** @test */
+    public function getFakeCprNumberFullNameAndGenderNotNull():void {
+        // given that there is FakePerson object
+        $fakePerson = new FakePerson();
+
+        // when getFakeCprNumberFullNameAndGender method is called
+        $data = $fakePerson->getFakeCprNumberFullNameAndGender();
+
+        // then asserted firstName, lastName, gender and cprNumber must not be null
+        $this->assertNotNull($data['firstName']);
+        $this->assertNotNull($data['lastName']);
+        $this->assertNotNull($data['gender']);
+        $this->assertNotNull($data['cprNumber']);
+    }
+
+    /** @test */
+    public function getFakeCprNumberFullNameAndGenderOriginateFromFile():void {
+        // given that there is FakePerson object and file with data 
+        $fakePerson = new FakePerson();
+        $jsonFile = file_get_contents('src/data/person-names.json');
+        $array = json_decode($jsonFile, true);
+        $personsArray = array_values($array)[0];
+        $mergedArray = array();
+
+        for ($i = 0; $i < count($personsArray); $i++) {
+            array_push($mergedArray, $personsArray[$i]['name']);
+            array_push($mergedArray, $personsArray[$i]['surname']);
+        }
+        array_push($mergedArray, 'male');
+        array_push($mergedArray, 'female');
+
+        // when getFakeCprNumberFullNameAndGender method is called
+        $data = $fakePerson->getFakeCprNumberFullNameAndGender();
+
+        // then asserted firstName, lastName and gender must originate from file
+        $this->assertContains($data['firstName'], $mergedArray);
+        $this->assertContains($data['lastName'], $mergedArray);
+        $this->assertContains($data['gender'], $mergedArray);
+    }
+
+    /** @test */
+    public function getFakeCprNumberFullNameAndGenderCprNumberCorrectLength():void {
+        // given that there is FakePerson object
+        $fakePerson = new FakePerson();
+
+        // when getFakeCprNumberFullNameAndGender method is called
+        $data = $fakePerson->getFakeCprNumberFullNameAndGender();
+
+        // then asserted cprNumber must be of correct length
+        $this->assertEquals(10, strlen($data['cprNumber']));
+    }
+
+    /** @test */
+    public function getFakeCprNumberFullNameAndGenderCprNumberCorrectFormat():void {
+        // given that there is FakePerson object
+        $fakePerson = new FakePerson();
+
+        // when getFakeCprNumberFullNameAndGender method is called
+        $data = $fakePerson->getFakeCprNumberFullNameAndGender();
+
+        // then asserted cprNumber must be of correct format
+        $days = intval(substr($data['cprNumber'], 0, 2));
+        $months = intval(substr($data['cprNumber'], 2, 2));
+        $years = intval(substr($data['cprNumber'], 4, 2));
+        
+        $this->assertLessThanOrEqual(30, $days);
+        $this->assertGreaterThanOrEqual(1, $days);
+        $this->assertLessThanOrEqual(12, $months);
+        $this->assertGreaterThanOrEqual(1, $months);
+        $this->assertLessThanOrEqual(99, $years);
+        $this->assertGreaterThanOrEqual(1 ,$years);
+    }
 }
 ?>
