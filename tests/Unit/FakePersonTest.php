@@ -491,5 +491,56 @@ class FakePersonTest extends TestCase {
         // then mobilePhoneNumber must be of correct length
         $this->assertEquals(8, strlen($data['mobilePhoneNumber']));
     }
+
+    /** @test */
+    public function getFakePersonNotNull(): void {
+        // given that there is a FakePerson object
+        $fakePerson = new FakePerson();
+
+        // when getFakePerson method is called 
+        $data = $fakePerson->getFakePerson();
+
+        // then asserted FakePerson data must not be null
+        $this->assertNotNull($data['firstName']);
+        $this->assertNotNull($data['lastName']);
+        $this->assertNotNull($data['gender']);
+        $this->assertNotNull($data['dateOfBirth']);
+        $this->assertNotNull($data['cprNumber']);
+        $this->assertNotNull($data['streetName']);
+        $this->assertNotNull($data['streetNumber']);
+        $this->assertNotNull($data['floor']);
+        $this->assertNotNull($data['door']);
+        $this->assertNotNull($data['town']);
+        $this->assertNotNull($data['code']);
+        $this->assertNotNull($data['mobilePhoneNumber']);
+    }
+    
+    /** @test */
+    public function getFakePersonsNotNull(): void {
+        // given that there is a FakePerson object
+        $fakePerson = new FakePerson();
+
+        // when getFakePersons method is called 
+        $data = $fakePerson->getFakePersons(5);
+
+        // then asserted FakePersons data must not be null
+        $this->assertNotNull($data[0]);
+        $this->assertNotNull($data[1]);
+        $this->assertNotNull($data[2]);
+        $this->assertNotNull($data[3]);
+    }
+    
+    /** @test */
+    public function getFakePersonsCorrectNumberOfPersons(): void {
+        // given that there is a FakePerson object
+        $fakePerson = new FakePerson();
+
+        // when getFakePersons method is called 
+        $data = $fakePerson->getFakePersons(5);
+
+        // then asserted number of persons can't be lesser than 2 or greater than 100
+        $this->assertGreaterThanOrEqual(2, count($data));
+        $this->assertLessThanOrEqual(100, count($data));
+    }
 }
 ?>

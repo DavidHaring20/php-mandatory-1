@@ -253,7 +253,7 @@ class FakePerson {
         return $data;
     }
 
-    public function get_fake_person() {
+    public function getFakePerson() {
         $fakePerson = new FakePerson();
         $cprNumberFullnameGenderAndDateOfBirth = $fakePerson->getFakeCprNumberFullNameGenderAndDateOfBirth();
         $address = $fakePerson->getFakeAddress();
@@ -262,7 +262,7 @@ class FakePerson {
         return $data;
     }
 
-    public function get_fake_persons($numberOfFakePersons) {
+    public function getFakePersons($numberOfFakePersons) {
         if ($numberOfFakePersons < 2 || $numberOfFakePersons > 100) {
             return "Number of required persons should be between 2 and 100. If you want to get one person, use get_fake_person() method.";
         }
@@ -271,7 +271,7 @@ class FakePerson {
         $data = array();
 
         for ($i = 0; $i < $numberOfFakePersons; $i++) {
-            array_push($data, $fakePerson->get_fake_person());
+            array_push($data, $fakePerson->getFakePerson());
         }
 
         return $data;
